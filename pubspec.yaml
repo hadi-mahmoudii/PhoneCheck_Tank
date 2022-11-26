@@ -82,12 +82,15 @@ dependencies:
   simple_shadow: ^0.3.0
   app_settings: ^4.1.8
   fluttericon: ^2.0.0
-  flutter_background: ^1.1.0
-  
-  
+  flutter_background: ^1.1.0 
   tbibaudioplayers: ^0.0.3
   just_audio: ^0.9.30
-  wifi_iot: ^0.3.17
+  wifi_iot: ^0.3.18
+  flutter_hardware_button_nullsafety: ^0.1.2
+  flutter_android_volume_keydown: ^1.0.0
+  battery_plus: ^3.0.2
+
+  
  
  
   

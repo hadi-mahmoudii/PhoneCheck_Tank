@@ -1,55 +1,68 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:async';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:phonecheck/modules/core/constants/const.dart';
-import '../controller/test_controller.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-class GPSScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => GPSScreenState();
-}
+import '../../../core/constants/const.dart';
+import '../inTests_controller.dart';
+import '../test_controller.dart';
 
-class GPSScreenState extends State<GPSScreen> {
+class GpsController extends GetxController {
   StreamSubscription<ServiceStatus> serviceStatusStream;
-  bool serviceStatus = false;
+  bool serviceStatus;
+  var index = 0.obs;
 
   @override
-  void initState() {
-    Get.find<TestController>().onStartTest(20, 10);
-   
-    super.initState();
+  void onInit() {
     checkStatus();
     serviceStatusStream =
         Geolocator.getServiceStatusStream().listen((ServiceStatus status) {
-      setState(() {
-        serviceStatus = status == ServiceStatus.enabled ? true : false;
-      });
-      print(status);
+      serviceStatus = status == ServiceStatus.enabled ? true : false;
+    print(status);
+      test();
     });
+    super.onInit();
   }
 
   checkStatus() async {
     var ss = await Geolocator.isLocationServiceEnabled();
-    setState(() {
-      serviceStatus = ss;
-    });
+    serviceStatus = ss;
   }
 
-  @override
+    @override
   void dispose() {
-    // TODO: implement dispose
+   
     serviceStatusStream.cancel();
     super.dispose();
+  }
+
+  test() {
+    print(serviceStatus);
+    if (serviceStatus) {
+      startTest();
+    } else {
+      Get.dialog(WillPopScope(
+          onWillPop: onWillPop,
+          child: SizedBox(
+              height: screenHeight / 8,
+              child: AlertDialog(
+                  content: inTestDialog(
+                      'Turn On',
+                      ' Gps',
+                      'Gps Setting',
+                      () => AppSettings.openLocationSettings(),
+                      Colors.green)))));
+    }
   }
 
   startTest() async {
     Position position = await _determinePosition();
     if (position != null) {
-      Get.find<TestController>().onEndTest(20, "pass");
+      Timer(Duration(seconds: 2),
+          () => Get.find<TestController>().onEndTest(20, "pass"));
     }
     print(position.toString());
   }
@@ -89,37 +102,5 @@ class GPSScreenState extends State<GPSScreen> {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop,
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              !serviceStatus
-                  ? ElevatedButton(
-                      onPressed: () async => AppSettings.openLocationSettings(),
-                      child: Text('Turn on Gps'))
-                  : Column(
-                      children: [
-                        Text('Gps is On'),
-                        TextButton(
-                            onPressed: () => startTest(),
-                            child: Text(
-                              "start test",
-                              style: TextStyle(color: Colors.blue),
-                            )),
-                      ],
-                    ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

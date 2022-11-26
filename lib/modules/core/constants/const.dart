@@ -163,7 +163,7 @@ Color hexToColor(String code) {
   return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
 }
 
-String humanNumberGenerator(num) {
+String humanNumberGenerator ( num) {
   if (num > 999 && num < 99999) {
     return "${(num / 1000).toStringAsFixed(1)}k";
   } else if (num > 99999 && num < 999999) {

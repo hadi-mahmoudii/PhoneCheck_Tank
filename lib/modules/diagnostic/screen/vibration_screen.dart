@@ -8,6 +8,16 @@ import 'package:vibration/vibration.dart';
 
 import '../widegt/dialogs.dart';
 
+
+
+vibrationTest()async{
+  Get.find<TestController>().onStartTest(24, 10);
+   if (await Vibration.hasVibrator()) {
+      Vibration.vibrate();
+   }
+    askResultDialog("Vibration", 24);
+}
+
 class VibrationScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => VibrationScreenState();
@@ -19,6 +29,7 @@ class VibrationScreenState extends State<VibrationScreen> {
     // TODO: implement initState
     super.initState();
     Get.find<TestController>().onStartTest(24, 10);
+ 
   }
 
   doVibrate() async {

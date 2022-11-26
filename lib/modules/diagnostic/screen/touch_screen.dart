@@ -4,21 +4,16 @@ import 'package:get/get.dart';
 import 'package:phonecheck/modules/core/constants/const.dart';
 import 'package:phonecheck/modules/diagnostic/controller/test_controller.dart';
 
-
-
-
-
-
 class TouchScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => TouchScreenState();
 }
 
 class TouchScreenState extends State<TouchScreen> {
-  
   int countCols = (screenWidth / 45).round();
-  int countRows = ((screenHeight - toolBar ) / 45).round();
-  int boxesCount = (((screenHeight - toolBar ) * screenWidth) / (45 * 45)).round();
+  int countRows = ((screenHeight) / 45).round();
+  double boxesCount = ((screenHeight * screenWidth) / (45 * 45));
+
   final key = GlobalKey();
   final Set<_Foo> _trackTaped = Set<_Foo>();
   List selected = [];
@@ -31,7 +26,6 @@ class TouchScreenState extends State<TouchScreen> {
     }
     print("len ${selected.length} total ${countRows * countCols}");
     if (selected.length == countRows * countCols) {
-      print('donneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
       Get.find<TestController>().onEndTest(7, "pass");
     }
   }
@@ -39,6 +33,8 @@ class TouchScreenState extends State<TouchScreen> {
   @override
   void initState() {
     Get.find<TestController>().onStartTest(7, 140);
+    print(boxesCount);
+    print(countCols * countCols);
     super.initState();
   }
 
@@ -77,7 +73,7 @@ class TouchScreenState extends State<TouchScreen> {
           onPointerMove: _detectTapedItem,
           child: GridView.builder(
             key: key,
-            itemCount: boxesCount,
+            itemCount: countCols * countRows,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: countCols,
@@ -86,13 +82,12 @@ class TouchScreenState extends State<TouchScreen> {
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
-              return Foo(index: index, child: circularWidget(index)
-                  // Container(
-                  //   width: 45,
-                  //   height: 45,
-                  //   color: selected.contains(index) ? Colors.red : Colors.blue,
-                  // ),
-                  );
+              return Foo(index: index, child: circularWidget(index));
+              //     Container(
+              //   width: 45,
+              //   height: 45,
+              //   color: selected.contains(index) ? Colors.red : Colors.blue,
+              // );
             },
           ),
           // onPointerUp: _clearSelection,
@@ -112,10 +107,6 @@ class TouchScreenState extends State<TouchScreen> {
         ),
       )),
     );
-  }
-
-  doThis() {
-    print("asd");
   }
 
   circularWidget(int itemSelect) {

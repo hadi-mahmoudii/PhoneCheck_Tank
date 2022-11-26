@@ -81,7 +81,7 @@ class TouchIndicator extends StatefulWidget {
   /// Creates a touch indicator canvas
   ///
   /// Touch indicators are shown on the child whenever a touch occurs
-  const TouchIndicator({
+  TouchIndicator({
     Key key,
     @required this.child,
     this.indicator,
@@ -97,7 +97,7 @@ class TouchIndicator extends StatefulWidget {
 
 class _TouchIndicatorState extends State<TouchIndicator> {
   Map<int, Offset> touchPositions = <int, Offset>{};
-
+  bool isDone = false;
   Iterable<Widget> buildTouchIndicators() sync* {
     if (touchPositions.isNotEmpty) {
       for (var touchPosition in touchPositions.values) {
@@ -156,7 +156,9 @@ class _TouchIndicatorState extends State<TouchIndicator> {
       },
       onPointerUp: (opc) {
         if (touchPositions.length > 1) {
-          Get.find<TestController>().onEndTest(8, "pass");
+          !isDone
+              ? {Get.find<TestController>().onEndTest(8, "pass"), isDone = true}
+              : null;
         }
         clearPointerPosition(opc.pointer);
       },

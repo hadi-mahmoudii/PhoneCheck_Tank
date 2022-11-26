@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 
@@ -22,12 +24,14 @@ class BluetoothScreenState extends State<BluetoothScreen> {
 
   @override
   void initState() {
-    Get.find<TestController>().onStartTest(21, 10 );
+    Get.find<TestController>().onStartTest(21, 10);
+    
     checkPermission();
     super.initState();
   }
 
   checkPermission() async {
+    Permission.bluetoothConnect.request();
     if (await Permission.location.request().isGranted) {
       if (await Permission.bluetoothScan.isGranted &&
           await Permission.bluetoothConnect.isGranted) {
@@ -63,10 +67,9 @@ class BluetoothScreenState extends State<BluetoothScreen> {
     ).listen((device) {
       discover.cancel();
       Get.find<TestController>().onEndTest(21, "pass");
-      
+
       //code for handling results
     }, onError: (e) {
-     
       //code for handling error
     });
   }
@@ -84,13 +87,14 @@ class BluetoothScreenState extends State<BluetoothScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 statusBle != BleStatus.ready
-                    ? TextButton(onPressed: ()  => AppSettings.openBluetoothSettings(), child: Text('Turn on Bluetooth'))
-                    : MaterialButton(
+                    ? TextButton(
+                        onPressed: () => AppSettings.openBluetoothSettings(),
+                        child: Text('Turn on Bluetooth'))
+                    : TextButton(
                         child: Text(
                           "start test",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blue),
                         ),
-                        color: secondColor,
                         onPressed: () => {searchDeviceBlue()}),
               ],
             ),

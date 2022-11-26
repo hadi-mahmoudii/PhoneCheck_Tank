@@ -15,40 +15,34 @@ Future<void> succesDialog(
 ) async {
   String text = testsID[0][testId];
   Future.delayed(const Duration(seconds: 2), () {
+    // Get.back(closeOverlays: true);
     onEnd;
   });
 
+  double height = screenHeight / 16;
+  double width = screenWidth * 0.8;
+
   return Get.dialog(
     AlertDialog(
-      content: SingleChildScrollView(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(
-              width: screenWidth / 1.8,
-              child: Text(
-                '$text test was Done Succesfully',
-                style: const TextStyle(fontSize: 15, wordSpacing: 0.5),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            // const SizedBox(
-            //   width: 5,
-            // ),
-            SizedBox(
-              height: 50,
-              width: 50,
-              child: Image.asset(
-                'assets/images/check.png',
-                width: 40,
-                height: 40,
-              ),
-            ),
-          ],
-        ),
+        content: Container(
+      height: height,
+      width: width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(child: Text('$text was succesfull')),
+          SizedBox(
+            width: 5,
+          ),
+          Image.asset(
+            'assets/images/check.png',
+            height: 50,
+            width: width / 5,
+          ),
+        ],
       ),
-    ),
+    )),
   );
 }
 
@@ -150,6 +144,7 @@ Widget askButton(String kind, String title, int testId) {
           break;
         case 'restart':
           {
+            testController.doneTests.remove(testId);
             testController.onStartTest(
               testId,
               10,

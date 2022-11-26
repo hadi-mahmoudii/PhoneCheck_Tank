@@ -60,6 +60,7 @@ class WifiScreenState extends State<WifiScreen> {
           body: Center(
         child: conn != ConnectivityResult.wifi
             ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Turn on wifi to test"),
                 SizedBox(height: 10,),

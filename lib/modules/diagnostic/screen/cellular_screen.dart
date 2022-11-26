@@ -12,94 +12,6 @@ import 'package:phonecheck/modules/dashboard/widegt/loading_widget.dart';
 import 'package:phonecheck/modules/diagnostic/controller/test_controller.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
-// class CellularScreen extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() => CellularScreenState();
-// }
-
-// class CellularScreenState extends State<CellularScreen> {
-//   var subscription;
-//   ConnectivityResult conn = ConnectivityResult.mobile;
-//   bool canDone = false;
-
-//   @override
-//   void initState() {
-//     Get.find<TestController>().onStartTest(19, 15);
-
-//     Timer(Duration(seconds: 2), () => checkTest(isDone: true));
-//     subscription = Connectivity()
-//         .onConnectivityChanged
-//         .listen((ConnectivityResult result) {
-//       setState(() {
-//         conn = result;
-//       });
-
-//     });
-//     super.initState();
-//   }
-
-//   Future<dynamic>checkTest({isDone}) async {
-//     conn = await (Connectivity().checkConnectivity());
-//     if (isDone != null) {
-//       canDone = true;
-//     }
-
-//     if (conn == ConnectivityResult.mobile && canDone) {
-//       conn = ConnectivityResult.mobile;
-//       // Get.find<TestController>().onEndTest(19, "pass");
-//     } else if (conn == ConnectivityResult.wifi) {
-//       conn = ConnectivityResult.wifi;
-//     }
-//     return conn;
-//   }
-
-//   @override
-//   void dispose() {
-//     // TODO: implement dispose
-//     super.dispose();
-//     subscription.cancel();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return WillPopScope(
-//       onWillPop: onWillPop,
-//       child: Scaffold(
-//         body: FutureBuilder(
-//           future: checkTest(),
-//           builder: (BuildContext context, AsyncSnapshot snapshot) {
-//             if (snapshot.hasData) {
-//               if (snapshot.data == ConnectivityResult.mobile) {
-//                 Get.find<TestController>().onEndTest(19, 'past');
-//                 return Center(
-//                   child: Text('Cellular in On'),
-//                 );
-//               } else if (snapshot.data == ConnectivityResult.wifi) {
-//                 return Center(
-//                   child: Column(
-//                     children: [
-//                       Text("Please Turn off wifi and test Again"),
-//                       SizedBox(
-//                         height: 10,
-//                       ),
-//                       TextButton(
-//                           onPressed: () {
-//                             Get.find<TestController>().onStartTest(19, 15);
-//                           },
-//                           child: Text('Try Again'))
-//                     ],
-//                   ),
-//                 );
-//               }
-//             }
-//             return LoadingWidget(mainFontColor: Colors.black);
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class CellularScreen extends StatefulWidget {
   @override
   _CellularScreenState createState() => _CellularScreenState();
@@ -111,16 +23,14 @@ class _CellularScreenState extends State<CellularScreen> {
 
   @override
   void initState() {
-    super.initState();
-    Get.find<TestController>().onStartTest(19, 25);
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
     });
-  }
-
-  endTest() {
-    Get.find<TestController>().onEndTest(19, 'pass');
+    Timer(Duration(seconds: 2),
+        () => Get.find<TestController>().onEndTest(19, 'pass'));
+    
+    super.initState();
   }
 
   @override
@@ -129,10 +39,21 @@ class _CellularScreenState extends State<CellularScreen> {
 
     switch (_source.keys.toList()[0]) {
       case ConnectivityResult.mobile:
-        endTest();
         return Scaffold(
-          body: Center(
-            child: Text('Cellular is On'),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text('Cellular is On'),
+              ),
+              TextButton(
+                  onPressed: () =>
+                      Get.find<TestController>().onEndTest(19, 'pass'),
+                  child: Text(
+                    'start test',
+                    style: TextStyle(color: Colors.blue),
+                  ))
+            ],
           ),
         );
 
@@ -149,8 +70,7 @@ class _CellularScreenState extends State<CellularScreen> {
                 ),
                 TextButton(
                     onPressed: () {
-                      Get.find<TestController>().onStartTest(19, 15);
-                      setState(() {});
+                      Get.find<TestController>().onEndTest(19, 'pass');
                     },
                     child: Text('Try Again')),
               ],

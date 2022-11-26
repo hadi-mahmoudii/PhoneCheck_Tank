@@ -30,7 +30,7 @@ class DiagnosticScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
                           width: screenWidth,
-                          height: 56,
+                          height: screenHeight / 15,
                           decoration: BoxDecoration(
                             color: Color(0xFF262626),
                             borderRadius: BorderRadius.circular(cardRadius),
@@ -123,19 +123,21 @@ class DiagnosticScreen extends StatelessWidget {
                       //   ),
                       // ),
                       Container(
-                        height: 56,
+                        height: screenHeight / 15,
                         width: screenWidth,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border(
                                 top: BorderSide(color: borderColor, width: 1))),
                         child: Row(
+                          mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             for (int i = 0;
                                 i < controller.testGroup.length;
                                 i++)
                               pendingCircle(i),
+
                             pendingCircle(controller.testGroup.length + 1),
                             // pendingCircle(testResult: "fail"),
                             // pendingCircle(testResult: "success"),
@@ -227,14 +229,16 @@ pendingCircle(index, {testResult = null}) {
         child: Container(
           width: 25,
           height: 25,
-          decoration:((index > Get.find<DiagnosticController>().categoryIndex) || isActive)
-              ? BoxDecoration(
-                  color: Color(0xFFC6C6C6),
-                  borderRadius: BorderRadius.circular(25))
-              : BoxDecoration(
-                  color: Colors.white,
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/ok.png"))),
+          decoration:
+              ((index > Get.find<DiagnosticController>().categoryIndex) ||
+                      isActive)
+                  ? BoxDecoration(
+                      color: Color(0xFFC6C6C6),
+                      borderRadius: BorderRadius.circular(25))
+                  : BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/ok.png"))),
         ),
       ),
     ),
@@ -258,28 +262,39 @@ simpleListItem(Test test, int index) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    test.title,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: textColor),
-                  ),
-                  // Text(
-                  //   test.description,
-                  //   style: TextStyle(color: textColor),
-                  // ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
+                    Text(
+                      test.title,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          color: textColor),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    test.description != null
+                        ? Text(
+                            test.description,
+                            style: TextStyle(color: textColor),
+                          )
+                        : SizedBox(
+                            height: 0,
+                            width: 0,
+                          )
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
+                  ],
+                ),
               ),
               Container(
                 alignment: Alignment.topCenter,

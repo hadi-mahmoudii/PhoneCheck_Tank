@@ -15,7 +15,9 @@ class TestController extends GetxController {
   Timer checkTimer;
   Result result;
   var testResult;
-  List<int> needAskTests = [11, 12, 24, 29, 28, 30 , 19 , 9];
+  List<int> needAskTests = [11, 12, 24, 29, 28, 30, 19, 9];
+  List<int> inTest = [18, 19, 20, 21 , 3 , 4];
+  List<int> doneTests = [];
 
   @override
   onInit() {
@@ -27,16 +29,14 @@ class TestController extends GetxController {
     print("test is started");
     testResult = null;
     cancellTimer();
-    if(needAskTests.contains(testId)){
-
-    }else{
-checkTimer = Timer(Duration(seconds: seconds), () {
-          if (testResult == null) {
-            onEndTest(testId, "fail");
-          }
-        });
+    if (needAskTests.contains(testId)) {
+    } else {
+      checkTimer = Timer(Duration(seconds: seconds), () {
+        if (testResult == null) {
+          onEndTest(testId, "fail");
+        }
+      });
     }
-    
   }
 
   cancellTimer() {
@@ -45,45 +45,54 @@ checkTimer = Timer(Duration(seconds: seconds), () {
     }
   }
 
-  checkResultTest(var test) {
+  checkResultTest(var test, int testId) {
+    print('check result test for $testId');
     if (test != null) {
-      Get.back(closeOverlays: true);
+      Get.back(
+        closeOverlays: true,
+      );
       Get.find<DiagnosticController>().goNextTest();
-
+      //
       testResult = null;
     } else {
-      print('test is empty');
-      checkResultTest(test);
+      checkResultTest(test, testId);
     }
   }
 
-  onEndTest(testId, type , {testOptions status}) async {
+  onEndTest(testId, type, {testOptions status , dynamic description} ) async {
     cancellTimer();
-    testResult = await Get.find<DiagnosticController>()
-        .onDoneTest(testId, result.id, type);
+    if (!doneTests.contains(testId)) {
+      doneTests.add(testId);
 
-    status == testOptions.unsuportted
-        ? Get.defaultDialog(
-            contentPadding: EdgeInsets.all(15),
-            radius: 8,
-            content: Column(
-              children: [
-                Center(
-                  child: Text('unsuportted Test'),
-                ),
-                MaterialButton(
-                  color: Colors.green,
-                  onPressed: () => {
-                    checkResultTest(testResult),
-                  },
-                  child: Text('Next test',
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
-                ),
-              ],
-            ))
-        : type == 'pass'
-            ? succesDialog(testId, checkResultTest(testResult))
-            : failTestDialog('test', testId);
+      testResult = await Get.find<DiagnosticController>()
+          .onDoneTest(testId, result.id, type , description: description);
+
+      status == testOptions.unsuportted
+          ? Get.defaultDialog(
+              contentPadding: EdgeInsets.all(15),
+              radius: 8,
+              content: Column(
+                children: [
+                  Center(
+                    child: Text('unsuportted Test'),
+                  ),
+                  MaterialButton(
+                    color: Colors.green,
+                    onPressed: () => {
+                      checkResultTest(testResult, testId),
+                    },
+                    child: Text('Next test',
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
+                  ),
+                ],
+              ))
+          : type == 'pass'
+              ? inTest.contains(testId)
+                  ? checkResultTest(testResult, testId)
+                  : succesDialog(testId, checkResultTest(testResult, testId))
+              : failTestDialog('test', testId);
+    
+    }
   }
 
   askWork(title, testId, seconds, BuildContext context) {

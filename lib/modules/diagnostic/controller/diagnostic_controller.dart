@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:phonecheck/modules/core/constants/const.dart';
 import 'package:phonecheck/modules/dashboard/controller/home_controller.dart';
+import 'package:phonecheck/modules/diagnostic/controller/inTests_controller.dart';
 import 'package:phonecheck/modules/diagnostic/model/check.dart';
 import 'package:phonecheck/modules/diagnostic/model/device.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -10,6 +11,7 @@ import 'package:phonecheck/modules/diagnostic/model/result.dart';
 import 'package:phonecheck/modules/diagnostic/model/test.dart';
 import 'package:phonecheck/modules/diagnostic/repository/diagnostic_service.dart';
 import "package:collection/collection.dart";
+import 'package:phonecheck/modules/diagnostic/screen/result_screen.dart';
 
 class DiagnosticController extends GetxController {
   static DiagnosticController get to => Get.find();
@@ -20,6 +22,7 @@ class DiagnosticController extends GetxController {
   int categoryIndex;
   int testIndex;
   List<Test> categoryTests;
+  List<int> inTests = [18, 19, 20, 21, 3, 4, 5, 17, 15, 16, 1, 2];
 
   @override
   onInit() {
@@ -27,37 +30,32 @@ class DiagnosticController extends GetxController {
   }
 
   startTest(checkerId) async {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Get.back();
-    check = await DiagnosticService.initCheck(
-        checkerId, Get.find<HomeController>().deviceId);
-    var groupByDate = groupBy(check.tests, (obj) => obj.category);
-    testGroup = groupByDate.keys.toList();
-    buildCurrentStatus(0);
-    update();
+      check = await DiagnosticService.initCheck(
+          checkerId, Get.find<HomeController>().deviceId);
+
+      var groupByDate = groupBy(check.tests, (obj) => obj.category);
+      testGroup = groupByDate.keys.toList();
+      buildCurrentStatus(0);
+      update();
     });
-    
   }
 
   buildCurrentStatus(index) {
     if (index + 1 > testGroup.length) {
       Get.snackbar("پایان تست", "تمام تست ها پایان یافت");
+      Get.to(ResultScreen());
     } else {
       categoryIndex = index;
       testIndex = 0;
-      categoryTests = check.tests
-          .where((i) => i.category == testGroup[categoryIndex])
-          .toList();
-      categoryTests[testIndex].status = "in_progress";
+      categoryTests =
+          check.tests.where((i) => i.category == testGroup[categoryIndex]).toList();
+   testsStatus();
       update();
       Get.back();
       Get.back();
-      Timer(
-          Duration(seconds: 2),
-              () => Get.toNamed(
-              "/${categoryTests[testIndex].title.replaceAll(' ', '')}"));
-      // print(categoryTests[testIndex].title.replaceAll(' ', ''));
-      // Get.toNamed("/${categoryTests[testIndex].title.replaceAll(' ', '')}");
+      runTest(categoryTests[testIndex].id);
     }
   }
 
@@ -65,16 +63,34 @@ class DiagnosticController extends GetxController {
     if (testIndex + 1 == categoryTests.length) {
       buildCurrentStatus(categoryIndex + 1);
     } else {
-      // categoryTests[testIndex].status = testIndex.isEven ? "success" : "danger";
       testIndex += 1;
-      categoryTests[testIndex].status = "in_progress";
-      print(categoryTests[testIndex].title.replaceAll(' ', ''));
+      testsStatus();
+
       Get.back();
       Get.back();
+      runTest(categoryTests[testIndex].id);
+    }
+  }
+
+  runTest(int testId) {
+    if (inTests.contains(testId)) {
+      Get.find<InTestsController>().runInTests(testId);
+    } else {
       Timer(
           Duration(seconds: 2),
           () => Get.toNamed(
               "/${categoryTests[testIndex].title.replaceAll(' ', '')}"));
+    }
+  }
+
+  testsStatus() {
+    if (categoryTests[testIndex].category == 'buttons') {
+      categoryTests.forEach((element) {
+        print(element.id);
+        element.status = 'in_progress';
+      });
+    } else {
+      categoryTests[testIndex].status = "in_progress";
     }
   }
 
@@ -85,7 +101,7 @@ class DiagnosticController extends GetxController {
     return result;
   }
 
-  onDoneTest(int testId, int resultId, status) async {
+  onDoneTest(int testId, int resultId, status,{ dynamic description}) async {
     Result result = await DiagnosticService.initResult(check.id, testId, status,
         resultId: resultId);
     int index = categoryTests.indexWhere((element) => element.id == testId);
@@ -93,6 +109,8 @@ class DiagnosticController extends GetxController {
     print(index);
     print("index______________");
     categoryTests[index].status = status;
+    categoryTests[index].description = description;
+
     update();
     return result;
   }
