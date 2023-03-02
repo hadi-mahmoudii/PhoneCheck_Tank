@@ -1,5 +1,4 @@
-
-
+import 'dart:async';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -13,7 +12,6 @@ import '../../widegt/tests_commands.dart';
 import '../inTests_controller.dart';
 
 class WifiController extends GetxController {
-
   var _source = {ConnectivityResult.none: false};
 
   final MyConnectivity _connectivity = MyConnectivity.instance;
@@ -41,7 +39,10 @@ class WifiController extends GetxController {
     ever(index, (Value) {
       print(index);
       if (_source.keys.toList()[0] == ConnectivityResult.wifi) {
-        succesTest(testId, 'pass');
+        Timer(Duration(seconds: 2), () {
+succesTest(testId, 'pass' , desc: "pass");
+        });
+        
       } else if (_source.keys.toList()[0] == ConnectivityResult.mobile) {
         Get.dialog(WillPopScope(
           onWillPop: onWillPop,
@@ -53,8 +54,9 @@ class WifiController extends GetxController {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   inTestDialog('Turn on', ' Wifi', 'wifi setting',()=> AppSettings.openWIFISettings() , Colors.green),
-                  //  inTestDialog('Turn on',  'Data', 'Data setting', ()=> AppSettings.openWirelessSettings() , Colors.green),
+                    inTestDialog('Turn on', ' Wifi', 'wifi setting',
+                        () => AppSettings.openWIFISettings(), Colors.green),
+                    //  inTestDialog('Turn on',  'Data', 'Data setting', ()=> AppSettings.openWirelessSettings() , Colors.green),
                   ],
                 )),
           ),
@@ -62,6 +64,4 @@ class WifiController extends GetxController {
       }
     });
   }
-
-
 }

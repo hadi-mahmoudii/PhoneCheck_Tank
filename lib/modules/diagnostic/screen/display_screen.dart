@@ -37,10 +37,7 @@ class DisplayScreenState extends State<DisplayScreen> {
       if (index + 1 == colors.length) {
         testInProgress = false;
         statusColor = Colors.white;
-        askResultDialog(
-          "display",
-          9,
-        );
+        askResultDialog("display", 9, desc: 'completed');
       } else {
         index += 1;
         statusColor = colors[index];

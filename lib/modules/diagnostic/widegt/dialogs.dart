@@ -46,7 +46,7 @@ Future<void> succesDialog(
   );
 }
 
-Future<void> askResultDialog(String test, int testId) async {
+Future<void> askResultDialog(String test, int testId, {String desc}) async {
   return Get.dialog(WillPopScope(
     onWillPop: () async => false,
     child: SizedBox(
@@ -70,11 +70,19 @@ Future<void> askResultDialog(String test, int testId) async {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  askButton('no', 'No', testId),
+                  askButton(
+                    'no',
+                    'No',
+                    testId,
+                  ),
                   const SizedBox(
                     width: 20,
                   ),
-                  askButton('yes', 'Yes', testId),
+                  askButton(
+                    'yes',
+                    'Yes',
+                    testId,
+                  ),
                 ],
               )
             ],
@@ -85,7 +93,8 @@ Future<void> askResultDialog(String test, int testId) async {
   ));
 }
 
-Future<void> failTestDialog(String test, int testId) async {
+Future<void> failTestDialog(int testId) async {
+  String text = testsID[0][testId];
   return Get.dialog(SizedBox(
     height: screenHeight / 2,
     width: screenWidth / 3,
@@ -97,7 +106,7 @@ Future<void> failTestDialog(String test, int testId) async {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                ' $test test was failed!',
+                ' $text test was failed!',
                 style: const TextStyle(
                     fontSize: 19, wordSpacing: 1, letterSpacing: 0.5),
                 maxLines: 2,
@@ -113,7 +122,11 @@ Future<void> failTestDialog(String test, int testId) async {
                   const SizedBox(
                     width: 20,
                   ),
-                  askButton('fail', 'Next test', testId),
+                  askButton(
+                    'fail',
+                    'Next test',
+                    testId,
+                  ),
                 ],
               )
             ],
@@ -124,7 +137,7 @@ Future<void> failTestDialog(String test, int testId) async {
   ));
 }
 
-Widget askButton(String kind, String title, int testId) {
+Widget askButton(String kind, String title, int testId, {String desc}) {
   var testController = Get.find<TestController>();
   bool greenBut = kind == 'yes' || kind == 'restart';
 
@@ -135,12 +148,13 @@ Widget askButton(String kind, String title, int testId) {
           testController.onEndTest(
             testId,
             'pass',
+            description: 'pass',
           );
 
           break;
         case 'no':
           Get.back();
-          testController.onEndTest(testId, 'fail');
+          testController.onEndTest(testId, 'fail', description: 'fail');
           break;
         case 'restart':
           {

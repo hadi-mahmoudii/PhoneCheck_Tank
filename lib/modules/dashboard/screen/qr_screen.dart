@@ -20,8 +20,11 @@ class QRScreenState extends State<QRScreen> {
 
   void _onQRViewCreated(QRViewController controller) {
     setState(() => this.controller = controller);
+    print('this is qr controller ${controller}');
     controller.resumeCamera();
+
     controller.scannedDataStream.listen((scanData) {
+      print('this is qr scan :  ${scanData.code}');
       setState(() => result = scanData);
     });
     // controller.pauseCamera();
@@ -43,7 +46,7 @@ class QRScreenState extends State<QRScreen> {
   void readQr() async {
     if (result != null) {
       controller.pauseCamera();
-      print(result.code);
+      print('this is result ${result.code}');
       controller.dispose();
       Get.find<DiagnosticController>().startTest(result.code);
     } else {

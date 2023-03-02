@@ -47,7 +47,7 @@ class TestController extends GetxController {
 
   checkResultTest(var test, int testId) {
     print('check result test for $testId');
-    if (test != null) {
+    if (test != null || test == Result) {
       Get.back(
         closeOverlays: true,
       );
@@ -90,7 +90,7 @@ class TestController extends GetxController {
               ? inTest.contains(testId)
                   ? checkResultTest(testResult, testId)
                   : succesDialog(testId, checkResultTest(testResult, testId))
-              : failTestDialog('test', testId);
+              : failTestDialog( testId);
     
     }
   }

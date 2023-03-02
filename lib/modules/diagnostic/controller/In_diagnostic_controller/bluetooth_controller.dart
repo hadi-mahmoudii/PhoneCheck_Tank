@@ -58,7 +58,7 @@ class BluetoothController extends GetxController {
     if (statusBle == BleStatus.ready ||
         statusBle == BleStatus.locationServicesDisabled) {
       Timer(const Duration(seconds: 2),
-          () => Get.find<TestController>().onEndTest(21, 'pass'));
+          () => Get.find<TestController>().onEndTest(21, 'pass' , description: 'pass'));
       isStarted = false;
     } else {
       Get.dialog(WillPopScope(

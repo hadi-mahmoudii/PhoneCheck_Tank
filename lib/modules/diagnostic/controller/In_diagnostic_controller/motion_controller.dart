@@ -16,7 +16,8 @@ class MotionController {
       if (event != null) {
         gyroscope.cancel();
         Timer(const Duration(seconds: 2), () {
-          Get.find<TestController>().onEndTest(17, "pass");
+          Get.find<TestController>()
+              .onEndTest(17, "pass",);
         });
       }
     });
@@ -28,7 +29,8 @@ class MotionController {
       if ((event != null)) {
         accelerometer.cancel();
         Timer(const Duration(seconds: 2), () {
-          Get.find<TestController>().onEndTest(15, "pass");
+          Get.find<TestController>()
+              .onEndTest(15, "pass",);
         });
       }
     });
@@ -39,7 +41,8 @@ class MotionController {
       if ((event != null)) {
         compass.cancel();
         Timer(const Duration(seconds: 2), () {
-          Get.find<TestController>().onEndTest(16, "pass");
+          Get.find<TestController>()
+              .onEndTest(16, "pass",);
         });
       }
     });

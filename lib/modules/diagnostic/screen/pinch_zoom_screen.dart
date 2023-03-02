@@ -28,7 +28,8 @@ class PinchZoomScreenState extends State<PinchZoomScreen> {
           resetDuration: const Duration(milliseconds: 100),
           maxScale: 2.5,
           onZoomStart: () {
-            Get.find<TestController>().onEndTest(10, "pass");
+            Get.find<TestController>()
+                .onEndTest(10, "pass", );
           },
           onZoomEnd: () {
             print('Stop zooming');

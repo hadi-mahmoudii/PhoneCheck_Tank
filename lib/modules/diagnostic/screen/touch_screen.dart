@@ -26,7 +26,7 @@ class TouchScreenState extends State<TouchScreen> {
     }
     print("len ${selected.length} total ${countRows * countCols}");
     if (selected.length == countRows * countCols) {
-      Get.find<TestController>().onEndTest(7, "pass");
+      Get.find<TestController>().onEndTest(7, "pass", description: 'completed');
     }
   }
 

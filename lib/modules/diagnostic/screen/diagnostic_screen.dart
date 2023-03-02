@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:phonecheck/modules/core/constants/const.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:phonecheck/modules/diagnostic/model/test.dart';
+import 'package:phonecheck/modules/diagnostic/screen/result_screen.dart';
 
 class DiagnosticScreen extends StatelessWidget {
   const DiagnosticScreen({Key key}) : super(key: key);
@@ -23,7 +24,7 @@ class DiagnosticScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: backgroundColor,
           body: Container(
-            child: controller.check != null
+            child: controller.check != null 
                 ? Column(
                     children: [
                       Container(
@@ -70,7 +71,7 @@ class DiagnosticScreen extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     Test test = controller.categoryTests[index];
-                                    return simpleListItem(test, index);
+                                    return simpleTestItem(test, index);
                                   }),
                             ),
                           ],
@@ -129,25 +130,28 @@ class DiagnosticScreen extends StatelessWidget {
                             color: Colors.white,
                             border: Border(
                                 top: BorderSide(color: borderColor, width: 1))),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            for (int i = 0;
-                                i < controller.testGroup.length;
-                                i++)
-                              pendingCircle(i),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              for (int i = 0;
+                                  i < controller.testGroup.length;
+                                  i++)
+                                pendingCircle(i),
 
-                            pendingCircle(controller.testGroup.length + 1),
-                            // pendingCircle(testResult: "fail"),
-                            // pendingCircle(testResult: "success"),
-                            // pendingCircle(isActive: true),
-                            // pendingCircle(),
-                            // pendingCircle(),
-                            // pendingCircle(),
-                            // pendingCircle(),
-                            // pendingCircle(),
-                          ],
+                              pendingCircle(controller.testGroup.length + 1),
+                              // pendingCircle(testResult: "fail"),
+                              // pendingCircle(testResult: "success"),
+                              // pendingCircle(isActive: true),
+                              // pendingCircle(),
+                              // pendingCircle(),
+                              // pendingCircle(),
+                              // pendingCircle(),
+                              // pendingCircle(),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -245,7 +249,7 @@ pendingCircle(index, {testResult = null}) {
   );
 }
 
-simpleListItem(Test test, int index) {
+simpleTestItem(Test test, int index) {
   return GestureDetector(
     // onTap: ()=>{Get.find<DiagnosticController>().goNextTest()},
     onTap: () => {
@@ -317,13 +321,13 @@ simpleListItem(Test test, int index) {
               ),
             ],
           ),
-          index < Get.find<DiagnosticController>().categoryTests.length - 1
-              ? Container(
+          // index < Get.find<DiagnosticController>().categoryTests.length - 1
+               Container(
                   width: screenWidth,
                   height: 1,
                   color: borderColor,
                 )
-              : Container()
+              // : Container()
         ],
       ),
     ),

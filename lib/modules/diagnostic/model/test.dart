@@ -7,22 +7,26 @@ class Test {
   String type;
   List<Result> results;
   String status;
-  dynamic description ;
+  dynamic description;
   bool hasDivider = true;
 
+  Test({
+    this.id,
+    this.title,
+    this.status,
+  });
 
   Test.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     category = json['category'];
     title = json['title'];
     type = json['type'];
-    
+
     if (json['results'] != null) {
       results = <Result>[];
       for (var result in json['results']) {
         results.add(Result.fromJson(result));
       }
-     
     }
   }
 }

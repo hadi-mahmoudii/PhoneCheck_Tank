@@ -1,7 +1,6 @@
 part of './app_pages.dart';
 
-abstract class Routes{
-
+abstract class Routes {
   static const HOME = '/home';
   static const SPLASH = '/splash_screen';
   static const Proximity = '/Proximity';
@@ -28,4 +27,5 @@ abstract class Routes{
   static const BackCamera = '/BackCamera';
   static const FrontCamera = '/FrontCamera';
   static const FlashLight = '/FlashLight';
+  static const Result = '/Result';
 }

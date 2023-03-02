@@ -34,8 +34,10 @@ class DiagnosticController extends GetxController {
       Get.back();
       check = await DiagnosticService.initCheck(
           checkerId, Get.find<HomeController>().deviceId);
+      print('this is test : ${check.tests}');
 
       var groupByDate = groupBy(check.tests, (obj) => obj.category);
+
       testGroup = groupByDate.keys.toList();
       buildCurrentStatus(0);
       update();
@@ -51,7 +53,7 @@ class DiagnosticController extends GetxController {
       testIndex = 0;
       categoryTests =
           check.tests.where((i) => i.category == testGroup[categoryIndex]).toList();
-   testsStatus();
+      testsStatus();
       update();
       Get.back();
       Get.back();
@@ -84,14 +86,13 @@ class DiagnosticController extends GetxController {
   }
 
   testsStatus() {
-    if (categoryTests[testIndex].category == 'buttons') {
-      categoryTests.forEach((element) {
-        print(element.id);
-        element.status = 'in_progress';
-      });
-    } else {
-      categoryTests[testIndex].status = "in_progress";
-    }
+    // if (categoryTests[testIndex].category == 'buttons') {
+    //   categoryTests.forEach((element) {
+    //     print(element.id);
+    //     element.status = 'in_progress';
+    //   });
+    // } else {
+    categoryTests[testIndex].status = "in_progress";
   }
 
   onStartTest(int testId) async {
@@ -101,7 +102,7 @@ class DiagnosticController extends GetxController {
     return result;
   }
 
-  onDoneTest(int testId, int resultId, status,{ dynamic description}) async {
+  onDoneTest(int testId, int resultId, status, {dynamic description}) async {
     Result result = await DiagnosticService.initResult(check.id, testId, status,
         resultId: resultId);
     int index = categoryTests.indexWhere((element) => element.id == testId);

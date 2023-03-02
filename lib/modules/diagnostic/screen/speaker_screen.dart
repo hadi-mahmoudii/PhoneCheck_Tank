@@ -192,7 +192,10 @@ class _SpeakerScreenState extends State<SpeakerScreen> {
     widget.audioPlayer.resume();
 
     Timer(Duration(seconds: 15), () {
-      askResultDialog('Speaker', 11);
+      askResultDialog(
+        'Speaker',
+        11,
+      );
       widget.audioPlayer.stop();
     });
   }

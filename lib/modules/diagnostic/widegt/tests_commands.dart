@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../controller/test_controller.dart';
 
-succesTest(int testId, String type) {
+succesTest(int testId, String type , {String desc}) {
   Get.find<TestController>().onEndTest(testId, type);
 }
 

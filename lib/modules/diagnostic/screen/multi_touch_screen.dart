@@ -157,7 +157,12 @@ class _TouchIndicatorState extends State<TouchIndicator> {
       onPointerUp: (opc) {
         if (touchPositions.length > 1) {
           !isDone
-              ? {Get.find<TestController>().onEndTest(8, "pass"), isDone = true}
+              ? {
+                  Get.find<TestController>().onEndTest(8, "pass",
+                      description:
+                          '${touchPositions.length.toString()} detected'),
+                  isDone = true
+                }
               : null;
         }
         clearPointerPosition(opc.pointer);

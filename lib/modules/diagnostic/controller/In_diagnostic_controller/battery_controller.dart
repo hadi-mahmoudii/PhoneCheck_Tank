@@ -14,7 +14,7 @@ class BatteryController {
   String batHealth;
 
   chargingTest() {
-    print('charge function');
+    
     charging = BatteryInfoPlugin().androidBatteryInfoStream.listen((event) {
       if (event.pluggedStatus == "AC" || event.pluggedStatus == "USB") {
         Timer(const Duration(seconds: 2), () {
@@ -29,7 +29,7 @@ class BatteryController {
 
   batteryHealth() {
     Timer(const Duration(seconds: 2), () {
-       Get.find<TestController>().onEndTest(2, 'pass', description: batHealth);
+       Get.find<TestController>().onEndTest(2, 'pass' , description: batHealth);
     });
    
   }

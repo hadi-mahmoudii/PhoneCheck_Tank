@@ -62,7 +62,7 @@ class GpsController extends GetxController {
     Position position = await _determinePosition();
     if (position != null) {
       Timer(Duration(seconds: 2),
-          () => Get.find<TestController>().onEndTest(20, "pass"));
+          () => Get.find<TestController>().onEndTest(20, "pass" ,  description: 'pass'));
     }
     print(position.toString());
   }

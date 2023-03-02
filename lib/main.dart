@@ -8,7 +8,9 @@ import 'package:phonecheck/modules/diagnostic/controller/In_diagnostic_controlle
 import 'package:phonecheck/modules/diagnostic/controller/diagnostic_controller.dart';
 import 'package:phonecheck/modules/diagnostic/controller/inTests_controller.dart';
 import 'package:phonecheck/modules/diagnostic/controller/test_controller.dart';
+import 'package:phonecheck/modules/diagnostic/repository/diagnostic_service.dart';
 import 'package:phonecheck/modules/diagnostic/screen/diagnostic_screen.dart';
+import 'package:phonecheck/modules/diagnostic/screen/result_screen.dart';
 
 import 'package:phonecheck/routes/app_pages.dart';
 
@@ -80,6 +82,40 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.SPLASH,
+      
+ 
     );
   }
 }
+
+// class Test extends StatefulWidget {
+//   @override
+//   State<Test> createState() => _TestState();
+// }
+
+// class _TestState extends State<Test> {
+//   @override
+//   void initState() {
+//     super.initState();
+//    var c = Get.put(ButtonsController());
+
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: GetX<ButtonsController>(builder: (controller) {
+//         return Center(
+//           child: Column(
+//             children: [
+//            ElevatedButton(onPressed: ()=> controller.volumeButtonsTest(4), child: )
+
+
+
+//             ],
+//           ),
+//         );
+//       }),
+//     );
+//   }
+// }

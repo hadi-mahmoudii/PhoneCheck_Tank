@@ -37,7 +37,7 @@ class CellularController extends GetxController {
       print(index);
       if (_source.keys.toList()[0] == ConnectivityResult.mobile) {
         isDone = true;
-        succesTest(testId, 'pass');
+        succesTest(testId, 'pass' , desc: "pass");
       } else if (_source.keys.toList()[0] == ConnectivityResult.wifi) {
         Get.dialog(WillPopScope(
           onWillPop: onWillPop,
