@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phonecheck/modules/dashboard/controller/home_controller.dart';
 import 'package:phonecheck/modules/dashboard/repository/device_service.dart';
+import 'package:phonecheck/modules/diagnostic/controller/In_diagnostic_controller/battery_controller.dart';
 import 'package:phonecheck/modules/diagnostic/controller/inTests_controller.dart';
 
 import 'dart:async';
@@ -30,8 +31,9 @@ class SplashController extends GetxController {
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
       _source = source;
-      InTestsController(startConnection: _source.keys.toList()[0]) ;
+      InTestsController(startConnection: _source.keys.toList()[0]);
     });
+    BatteryController().batteryHealth();
   }
 
   Future<String> getId() async {
@@ -53,7 +55,9 @@ class SplashController extends GetxController {
           options: Options(headers: {
             HttpHeaders.contentTypeHeader: "application/json",
           }));
+      print("response ::: $response");
       if (response.statusCode == 200) {
+        print("gotoHome");
         goToHome();
       }
     } catch (e) {

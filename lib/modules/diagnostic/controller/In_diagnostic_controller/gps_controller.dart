@@ -63,6 +63,7 @@ class GpsController extends GetxController {
     if (position != null) {
       Timer(Duration(seconds: 2),
           () => Get.find<TestController>().onEndTest(20, "pass" ,  description: 'pass'));
+         
     }
     print(position.toString());
   }

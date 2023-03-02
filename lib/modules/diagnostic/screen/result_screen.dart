@@ -59,8 +59,8 @@ class _ResultScreenState extends State<ResultScreen> {
               child: Container(
                 height: screenHeight,
                 child: ListView.builder(
-                  itemCount:   controller.testGroup.length,
-                
+                  itemCount:
+                  controller.testGroup.length,
                   physics: AlwaysScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     List<Test> categoryTest = controller.check.tests
@@ -92,8 +92,8 @@ class _ResultScreenState extends State<ResultScreen> {
                               children: [
                                 Expanded(
                                     child: Text(
-                                 controller.testGroup[index].toString(),
-                                 
+                                
+                                  controller.testGroup[index].toString(),
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 )),
@@ -109,6 +109,7 @@ class _ResultScreenState extends State<ResultScreen> {
                         ),
                         openedCategories.contains(index)
                             ? Container(
+                                width: screenWidth,
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                 ),
@@ -133,12 +134,13 @@ class _ResultScreenState extends State<ResultScreen> {
                                             width: screenWidth,
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 12),
+                                            // child: Text("data"),
                                             child: ListView.builder(
                                                 shrinkWrap: true,
-                                                physics:
-                                                    const FixedExtentScrollPhysics (),
-                                                itemCount:     categoryTest.length,
-                                            
+                                                // physics:
+                                                //     const FixedExtentScrollPhysics(),
+                                                itemCount:
+                                                categoryTest.length,
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         int index) {
@@ -150,9 +152,9 @@ class _ResultScreenState extends State<ResultScreen> {
                                                       status:
                                                           categoryTest[index]
                                                               .status);
-                                                
-
-                                                  return simpleTestItem(
+                                                  
+                                                  return 
+                                                   simpleTestItem(
                                                       test, index);
                                                 }),
                                           ),

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
+import 'package:flutter_hardware_button_nullsafety/hardware_button_nullsafety.dart';
 import 'package:get/get.dart';
 import 'package:is_lock_screen/is_lock_screen.dart';
 import 'package:phonecheck/modules/diagnostic/controller/test_controller.dart';
+import 'package:phonecheck/modules/diagnostic/widegt/tests_commands.dart';
 import 'package:volume_watcher/volume_watcher.dart';
 
 class ButtonsController extends GetxController {
@@ -40,7 +42,7 @@ class ButtonsController extends GetxController {
     double initVolume;
     double maxVolume;
     try {
-      initVolume = await VolumeWatcher.getCurrentVolume;
+      currentVolume = await VolumeWatcher.getCurrentVolume;
       maxVolume = await VolumeWatcher.getMaxVolume;
     } on PlatformException {
       platformVersion = 'Failed to get volume.';
@@ -57,51 +59,34 @@ class ButtonsController extends GetxController {
 
   power() {
     ever(index, (Value) {
-      Get.find<TestController>().onEndTest(5, 'pass' , description: 'pass');
+      Get.find<TestController>().onEndTest(5, 'pass', description: 'pass');
     });
   }
 
-  // volumeUp() {
-  //   VolumeWatcher.addListener((double volume) async {
-  //     if (currentVolume != 0) {
-  //       print('volume : $volume and currnet : $currentVolume');
-  //       v(volume);
+  volumeTest(int testId) {
+    VolumeWatcher.addListener((volume) {
+      print("volume : $volume current : ${currentVolume}");
+      if (volume < currentVolume || testId == 4) {
+      
+        succesTest(4, "pass");
+      } else if (volume > currentVolume || testId == 3) {
+        succesTest(3, "pass");
+      }
+      currentVolume = volume;
+    });
+  }
+
+  // volumeUpTest() {
+  //   print('volume upp');
+
+  //   VolumeWatcher.addListener((volume) {
+  //     print("volume : $volume current : ${currentVolume}");
+  //     if (volume > currentVolume) {
+  //       print("doneeeeeeeeeeeeeeeeee");
+  //       succesTest(3, "pass");
   //     } else {
   //       currentVolume = volume;
   //     }
   //   });
   // }
-
-  // volumeDown() {
-  //   volumeDownSt = VolumeWatcher.addListener((double volume) {
-  //     if (currentVolume != 0) {
-  //       if (volume < currentVolume) {
-  //         Get.find<TestController>().onEndTest(4, 'pass');
-  //         volumeDownSt.cancel();
-  //       }
-  //     }
-  //     currentVolume = volume;
-  //   }) as StreamSubscription;
-  // }
-
-  volumeButtonsTest(int testId) {
-    VolumeWatcher.addListener((double volume) {
-      print('volume : $volume currnet : $currentVolume');
-
-      if (testId == 4) {
-        if (volume < currentVolume) {
-          print('volume down pass');
-          Get.find<TestController>().onEndTest(4, 'pass' , description: "pass");
-        }
-        currentVolume = volume;
-      } else if (testId == 3) {
-        currentVolume = 0;
-        if (volume > currentVolume) {
-          
-          print('volume : $volume currnet : $currentVolume');
-          Get.find<TestController>().onEndTest(3, 'pass' , description: 'pass');
-        }
-      }
-    });
-  }
 }

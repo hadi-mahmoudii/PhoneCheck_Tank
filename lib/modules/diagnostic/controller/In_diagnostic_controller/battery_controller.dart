@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html' as battertManger;
 
 import 'package:battery_info/battery_info_plugin.dart';
 import 'package:battery_info/enums/charging_status.dart';
@@ -14,7 +15,6 @@ class BatteryController {
   String batHealth;
 
   chargingTest() {
-    
     charging = BatteryInfoPlugin().androidBatteryInfoStream.listen((event) {
       if (event.pluggedStatus == "AC" || event.pluggedStatus == "USB") {
         Timer(const Duration(seconds: 2), () {
@@ -28,9 +28,11 @@ class BatteryController {
   }
 
   batteryHealth() {
-    Timer(const Duration(seconds: 2), () {
-       Get.find<TestController>().onEndTest(2, 'pass' , description: batHealth);
-    });
-   
+    battertManger.BatteryManager batteryManager ;
+    // Timer(Duration(), callback)
+
+    print("battery :::::  ${batteryManager.level}");
+
+    Get.find<TestController>().onEndTest(2, 'pass', description: batHealth);
   }
 }

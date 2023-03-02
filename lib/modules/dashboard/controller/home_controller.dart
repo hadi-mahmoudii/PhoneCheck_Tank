@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:battery_info/battery_info_plugin.dart';
 import 'package:cpu_reader/cpu_reader.dart';
 import 'package:cpu_reader/cpuinfo.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_marketing_names/device_marketing_names.dart';
 import 'package:disk_space/disk_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phonecheck/modules/core/class/chart_sample_data.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:system_info2/system_info2.dart';
-import 'package:get/get.dart';
-import 'package:device_apps/device_apps.dart';
+
+import 'package:phonecheck/modules/core/class/chart_sample_data.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {

@@ -53,17 +53,17 @@ class InTestsController extends GetxController {
 
         break;
       case 3:
-        print('volume up test');
+       
 
         Get.find<ButtonsController>().initPlatformState();
-        Get.find<ButtonsController>().volumeButtonsTest(3);
+        Get.find<ButtonsController>().volumeTest(3);
         break;
       case 4:
         Timer(
             Duration(milliseconds: 10), (() => Get.back(closeOverlays: true)));
 
         Get.find<ButtonsController>().initPlatformState();
-        Get.find<ButtonsController>().volumeButtonsTest(4);
+        Get.find<ButtonsController>().volumeTest(4);
 
         break;
       case 5:

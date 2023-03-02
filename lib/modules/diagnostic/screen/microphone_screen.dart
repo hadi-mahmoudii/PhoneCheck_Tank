@@ -40,10 +40,12 @@ class MicrophoneScreenState extends State<MicrophoneScreen> {
     });
     print(noiseReading.toString());
     if (noiseReading.meanDecibel > 50.0) {
-        Get.find<TestController>().onEndTest(13, "pass" );
+      Timer(Duration(seconds: 1), () {
+
+      Get.find<TestController>().onEndTest(13, "pass");
 
       stop();
-
+      });
     }
     setState(() {
       noiseDecibel = noiseReading.meanDecibel.toString();
@@ -83,7 +85,8 @@ class MicrophoneScreenState extends State<MicrophoneScreen> {
       onWillPop: onWillPop,
       child: Scaffold(
         body: Center(
-            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               margin: EdgeInsets.all(25),
               child: Column(children: [
